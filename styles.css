@@ -480,36 +480,42 @@ main, section, header, footer, nav { position: relative; z-index: 1; }
 html:not([data-theme="light"]) .icon-sun { opacity: 1; transform: rotate(0); }
 html:not([data-theme="light"]) .icon-moon { opacity: 0; transform: rotate(-30deg); position: absolute; }
 
-.menu-toggle { display: none; flex-direction: column; gap: 5px; padding: 0; justify-content: center; align-items: center; }
+.menu-toggle { display: none; flex-direction: column; gap: 5px; padding: 0; justify-content: center; align-items: center; z-index: 160; }
 .menu-toggle span {
   display: block; width: 18px; height: 1.6px;
   background: currentColor;
   border-radius: 2px;
-  transition: transform var(--t-base) var(--ease-out), opacity var(--t-fast);
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 220ms ease-out;
+  will-change: transform, opacity;
 }
-.menu-toggle.is-open span:nth-child(1) { transform: translateY(6.6px) rotate(45deg); }
-.menu-toggle.is-open span:nth-child(2) { opacity: 0; }
-.menu-toggle.is-open span:nth-child(3) { transform: translateY(-6.6px) rotate(-45deg); }
+.menu-toggle.is-open span:nth-child(1) { transform: translateY(6.6px) rotate(45deg); opacity: 1; }
+.menu-toggle.is-open span:nth-child(2) { opacity: 0; transform: rotate(0deg); }
+.menu-toggle.is-open span:nth-child(3) { transform: translateY(-6.6px) rotate(-45deg); opacity: 1; }
 
 @media (max-width: 920px) {
   .menu-toggle { display: inline-flex; }
   .nav__menu {
     position: fixed;
     inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 150;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 22px;
-    background: rgba(7, 7, 12, 0.94);
+    background: rgba(7, 7, 12, 0.98);
     backdrop-filter: blur(20px);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-6%);
-    transition: opacity var(--t-base), transform var(--t-base) var(--ease-out);
+    transition: opacity 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: opacity;
   }
-  [data-theme="light"] .nav__menu { background: rgba(255, 255, 255, 0.95); }
-  .nav__menu.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-  .nav__menu .nav__link { font-size: 26px; font-family: var(--font-display); }
+  [data-theme="light"] .nav__menu { background: rgba(255, 255, 255, 0.98); }
+  .nav__menu.is-open { opacity: 1; pointer-events: auto; }
+  .nav__menu .nav__link { font-size: 26px; font-family: var(--font-display); transition: color 220ms ease-out; will-change: color; }
   .nav__cta { display: none; }
 }
 
