@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============ Primary SEO ============ -->
+  <title>Aatiqa Aslam — Creative Graphic Designer · Logo, Brand & Visual Identity</title>
+  <meta name="description" content="Aatiqa Aslam is a creative graphic designer based in Islamabad, crafting thoughtful logos, brand identities, social media content, and print design for clients worldwide." />
+  <meta name="author" content="Aatiqa Aslam" />
+  <meta name="keywords" content="Aatiqa Aslam, graphic designer, logo design, brand identity, social media design, book cover design, freelance designer, Pakistan, Islamabad" />
+  <meta name="theme-color" content="#0B0B14" />
+  <link rel="canonical" href="https://aatiqaaslam.com/" />
+
+  <!-- ============ Open Graph ============ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Aatiqa Aslam — Portfolio" />
+  <meta property="og:url" content="https://aatiqaaslam.com/" />
+  <meta property="og:title" content="Aatiqa Aslam — Creative Graphic Designer" />
+  <meta property="og:description" content="Crafting thoughtful logos, brand identities, social media, and print design from Islamabad — for clients worldwide." />
+  <meta property="og:image" content="https://aatiqaaslam.com/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Aatiqa Aslam — Creative Graphic Designer based in Islamabad" />
+
+  <!-- ============ Twitter Card ============ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aatiqa Aslam — Creative Graphic Designer" />
+  <meta name="twitter:description" content="Crafting thoughtful logos, brand identities, social media, and print design from Islamabad." />
+  <meta name="twitter:image" content="https://aatiqaaslam.com/og-image.jpg" />
+
+  <!-- ============ Structured data ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aatiqa Aslam",
+    "givenName": "Aatiqa",
+    "familyName": "Aslam",
+    "jobTitle": "Creative Graphic Designer",
+    "description": "Freelance graphic designer specializing in logo design, brand identity, social media content, and print design.",
+    "url": "https://aatiqaaslam.com/",
+    "image": "https://aatiqaaslam.com/og-image.jpg",
+    "email": "mailto:aatiqaaslam14@gmail.com",
+    "telephone": "+92-315-5299918",
+    "address": { "@type": "PostalAddress", "addressLocality": "Islamabad", "addressCountry": "PK" },
+    "knowsAbout": [ "Logo Design", "Brand Identity", "Social Media Design", "Print Design", "Visual Identity", "Typography" ],
+    "makesOffer": [
+      { "@type": "Offer", "name": "Logo Design" },
+      { "@type": "Offer", "name": "Brand Identity" },
+      { "@type": "Offer", "name": "Social Media Design" },
+      { "@type": "Offer", "name": "Cover Letter Design" }
+    ]
+  }
+  </script>
+
+  <!-- ============ Fonts ============ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FF5A36'/%3E%3Ctext x='50' y='68' font-size='62' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- ============ INITIAL LOADER ============ -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__brand">
+        <span class="loader__mark">A</span>
+        <span class="loader__name">atiqa<span class="loader__dot">.</span></span>
+      </div>
+      <div class="loader__bar"><div class="loader__bar-fill"></div></div>
+      <div class="loader__tag">Crafting visual stories</div>
+    </div>
+  </div>
+
+  <!-- ============ SCROLL PROGRESS + CURSOR ============ -->
+  <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__fill" id="scrollProgress"></div></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#home" class="nav__logo" aria-label="Aatiqa Aslam home" data-cursor="hover">
+        <span class="logo-mark">A</span>
+        <span class="logo-text">atiqa<span class="dot">.</span></span>
+      </a>
+
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="#about" class="nav__link" data-cursor="hover">About</a>
+        <a href="#skills" class="nav__link" data-cursor="hover">Skills</a>
+        <a href="#work" class="nav__link" data-cursor="hover">Work</a>
+        <a href="#services" class="nav__link" data-cursor="hover">Services</a>
+        <a href="#testimonials" class="nav__link" data-cursor="hover">Reviews</a>
+        <a href="#contact" class="nav__link" data-cursor="hover">Contact</a>
+      </nav>
+
+      <div class="nav__actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme" data-cursor="hover">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+
+        <a href="#contact" class="btn btn--primary btn--sm nav__cta btn-magnetic" data-cursor="hover">Let's Talk</a>
+
+        <button id="menuToggle" class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="home" class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <div class="grid-overlay"></div>
+    </div>
+
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <div class="hero__eyebrow">
+          <span class="pulse"></span>
+          Available for freelance · 2026
+        </div>
+
+        <h1 class="hero__title">
+          <span class="word word--1"><span>Crafting</span></span>
+          <span class="word word--2"><span><em>visual</em></span></span><br/>
+          <span class="word word--3"><span>stories</span></span>
+          <span class="word word--4"><span>that</span></span><br/>
+          <span class="word word--5"><span><em>resonate.</em></span></span>
+        </h1>
+
+        <p class="hero__tagline">
+          I'm <strong style="color:var(--text); font-weight:500;">Aatiqa Aslam</strong> — a creative graphic designer building thoughtful logos, brand identities, and social media content from my studio in Islamabad, for clients worldwide.
+        </p>
+
+        <div class="hero__cta">
+          <a href="#work" class="btn btn--primary btn-magnetic" data-cursor="hover">
+            View Projects
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#contact" class="btn btn--ghost btn-magnetic" data-cursor="hover">
+            Hire Me
+          </a>
+          <a href="aatiqa-aslam-resume.pdf" class="btn btn--outline btn-magnetic" target="_blank" rel="noopener noreferrer" data-cursor="hover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download CV
+          </a>
+        </div>
+
+        <div class="hero__meta">
+          <div class="meta-item"><strong>20+</strong><span>Projects Shipped</span></div>
+          <div class="meta-item"><strong>2+</strong><span>Years Crafting</span></div>
+          <div class="meta-item"><strong>5★</strong><span>Client Rating</span></div>
+        </div>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="saturn-stage" id="saturnStage">
+          <div class="saturn-stage__glow"></div>
+
+          <div class="orbit-ring orbit-ring--1"></div>
+          <div class="orbit-ring orbit-ring--2"></div>
+          <div class="orbit-ring orbit-ring--3"></div>
+
+          <div class="saturn">
+            <div class="saturn__aura"></div>
+            <div class="saturn__ring saturn__ring--back"></div>
+            <div class="saturn__ring saturn__ring--back saturn__ring--inner"></div>
+            <div class="saturn__ring saturn__ring--back saturn__ring--inner saturn__ring--inner-2"></div>
+            <div class="saturn__sphere">
+              <span class="saturn__highlight"></span>
+              <span class="saturn__bands"></span>
+              <span class="saturn__shadow"></span>
+            </div>
+            <div class="saturn__ring saturn__ring--front"></div>
+            <div class="saturn__ring saturn__ring--front saturn__ring--inner"></div>
+            <div class="saturn__ring saturn__ring--front saturn__ring--inner saturn__ring--inner-2"></div>
+          </div>
+
+          <div class="orbiter" data-orbit="0"><div class="orbiter__pulse"></div><div class="orbiter__icon tool-mark" style="background:linear-gradient(135deg,#001E36,#31A8FF);">Ps</div></div>
+          <div class="orbiter" data-orbit="1"><div class="orbiter__pulse"></div><div class="orbiter__icon tool-mark" style="background:linear-gradient(135deg,#330000,#FF9A00);">Ai</div></div>
+          <div class="orbiter" data-orbit="2"><div class="orbiter__pulse"></div><div class="orbiter__icon tool-mark" style="background:linear-gradient(135deg,#1ABCFE,#0ACF83 40%,#F24E1E 70%,#A259FF);">Fg</div></div>
+          <div class="orbiter" data-orbit="3"><div class="orbiter__pulse"></div><div class="orbiter__icon tool-mark" style="background:linear-gradient(135deg,#00C4CC,#7D2AE8);">Cv</div></div>
+          <div class="orbiter" data-orbit="4"><div class="orbiter__pulse"></div><div class="orbiter__icon tool-mark" style="background:linear-gradient(135deg,#1F0033,#D950BC);">Ae</div></div>
+          <div class="orbiter" data-orbit="5"><div class="orbiter__pulse"></div><div class="orbiter__icon tool-mark" style="background:linear-gradient(135deg,#FF8C3C,#FF3D00);">Bl</div></div>
+          <div class="orbiter" data-orbit="6"><div class="orbiter__pulse"></div><div class="orbiter__icon orbiter__icon--ux"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="12" height="12" rx="2"/><rect x="9" y="9" width="12" height="12" rx="2"/></svg></div></div>
+
+          <span class="streak streak--1"></span>
+          <span class="streak streak--2"></span>
+          <span class="streak streak--3"></span>
+
+          <span class="spark spark--1"></span>
+          <span class="spark spark--2"></span>
+          <span class="spark spark--3"></span>
+          <span class="spark spark--4"></span>
+          <span class="spark spark--5"></span>
+          <span class="spark spark--6"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>Branding</span><span>✦</span>
+      <span>Logo Design</span><span>✦</span>
+      <span>Visual Identity</span><span>✦</span>
+      <span>Print Design</span><span>✦</span>
+      <span>Social Media</span><span>✦</span>
+      <span>Typography</span><span>✦</span>
+      <span>Branding</span><span>✦</span>
+      <span>Logo Design</span><span>✦</span>
+      <span>Visual Identity</span><span>✦</span>
+      <span>Print Design</span><span>✦</span>
+      <span>Social Media</span><span>✦</span>
+      <span>Typography</span><span>✦</span>
+    </div>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">01 — About Me</span>
+        <h2 class="section__title">
+          A designer obsessed with<br>
+          <em>crafting brands that resonate.</em>
+        </h2>
+      </div>
+
+      <div class="about__grid">
+        <div class="about__intro reveal" data-delay="100">
+          <p class="lead">
+            Hi, I'm Aatiqa — a passionate graphic designer working remotely as a freelancer, helping individuals and small businesses bring their visual ideas to life from logos to social media to polished cover letters.
+          </p>
+          <p>
+            My work focuses on clarity, balance, and a clean modern aesthetic. I believe good design isn't just about looking nice — it's about communicating a message clearly and confidently. Every project, big or small, gets the same care and attention to detail.
+          </p>
+
+          <div class="philosophy">
+            <h3>Design Philosophy</h3>
+            <blockquote>"Design is intelligence made visible. I create with intention — every line, color, and curve serves the story."</blockquote>
+          </div>
+
+          <a href="aatiqa-aslam-resume.pdf" class="btn btn--outline btn-magnetic" target="_blank" rel="noopener noreferrer" data-cursor="hover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            View Full Resume
+          </a>
+        </div>
+
+        <div class="about__side reveal" data-delay="200">
+          <div class="about__card signature">
+            <span class="signature__role">Creative Director</span>
+            <p class="signature__name">Aatiqa Aslam</p>
+          </div>
+
+          <div class="about__card">
+            <h3>Quick Facts</h3>
+            <div class="facts">
+              <div class="fact">
+                <div class="fact__label">Based in</div>
+                <div class="fact__value">Islamabad, PK</div>
+              </div>
+              <div class="fact">
+                <div class="fact__label">Working</div>
+                <div class="fact__value">Remote · Worldwide</div>
+              </div>
+              <div class="fact">
+                <div class="fact__label">Response</div>
+                <div class="fact__value">~ 4 hours</div>
+              </div>
+              <div class="fact">
+                <div class="fact__label">Languages</div>
+                <div class="fact__value">English · Urdu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS / TOOLS ============ -->
+  <section id="skills" class="section skills-section">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">02 — Tools & Skills</span>
+        <h2 class="section__title">
+          The toolkit behind<br>
+          <em>every project.</em>
+        </h2>
+      </div>
+
+      <div class="tools-grid">
+        <div class="tool-card reveal" data-delay="100" data-w="95" style="--icon-shadow: rgba(0, 150, 255, 0.55);">
+          <div class="tool-card__icon" style="background:linear-gradient(135deg,#001E36,#31A8FF);">Ps</div>
+          <h3>Photoshop</h3>
+          <p>Composites, mockups, retouching, social media artwork.</p>
+          <div class="tool-progress">
+            <div class="tool-progress__bar" style="--w:95%"></div>
+            <span class="tool-progress__value">95%</span>
+          </div>
+        </div>
+
+        <div class="tool-card reveal" data-delay="160" data-w="92" style="--icon-shadow: rgba(255, 154, 0, 0.55);">
+          <div class="tool-card__icon" style="background:linear-gradient(135deg,#330000,#FF9A00);">Ai</div>
+          <h3>Illustrator</h3>
+          <p>Logo systems, vector marks, scalable identity assets.</p>
+          <div class="tool-progress">
+            <div class="tool-progress__bar" style="--w:92%"></div>
+            <span class="tool-progress__value">92%</span>
+          </div>
+        </div>
+
+        <div class="tool-card reveal" data-delay="220" data-w="88" style="--icon-shadow: rgba(242, 78, 30, 0.55);">
+          <div class="tool-card__icon" style="background:linear-gradient(135deg,#1ABCFE,#0ACF83 40%,#F24E1E 70%,#A259FF);">Fg</div>
+          <h3>Figma</h3>
+          <p>UI exploration, brand decks, collaborative design systems.</p>
+          <div class="tool-progress">
+            <div class="tool-progress__bar" style="--w:88%"></div>
+            <span class="tool-progress__value">88%</span>
+          </div>
+        </div>
+
+        <div class="tool-card reveal" data-delay="280" data-w="96" style="--icon-shadow: rgba(0, 200, 187, 0.55);">
+          <div class="tool-card__icon" style="background:linear-gradient(135deg,#00C4CC,#7D2AE8);">Cv</div>
+          <h3>Canva</h3>
+          <p>Rapid social templates, content kits, presentation design.</p>
+          <div class="tool-progress">
+            <div class="tool-progress__bar" style="--w:96%"></div>
+            <span class="tool-progress__value">96%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS STRIP ============ -->
+  <section class="stats-strip" aria-label="By the numbers">
+    <div class="container">
+      <ul class="stats reveal">
+        <li class="stat">
+          <span class="stat__num" data-target="20" data-suffix="+">0</span>
+          <span class="stat__label">Projects completed</span>
+        </li>
+        <li class="stat">
+          <span class="stat__num" data-target="5" data-suffix="+">0</span>
+          <span class="stat__label">Happy clients</span>
+        </li>
+        <li class="stat">
+          <span class="stat__num" data-target="4" data-suffix=" hr">0</span>
+          <span class="stat__label">Avg. response time</span>
+        </li>
+        <li class="stat">
+          <span class="stat__num" data-target="2" data-suffix="+">0</span>
+          <span class="stat__label">Years of experience</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PORTFOLIO ============ -->
+  <section id="work" class="section work">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">03 — Selected Work</span>
+        <h2 class="section__title">
+          A glimpse of my<br>
+          <em>recent projects.</em>
+        </h2>
+      </div>
+
+      <div class="filters reveal" data-delay="100" role="tablist" aria-label="Project category filters">
+        <button class="filter is-active" data-filter="all" role="tab" aria-selected="true" data-cursor="hover">All Work</button>
+        <button class="filter" data-filter="logo" role="tab" aria-selected="false" data-cursor="hover">Logos</button>
+        <button class="filter" data-filter="branding" role="tab" aria-selected="false" data-cursor="hover">Brand Identity</button>
+        <button class="filter" data-filter="social" role="tab" aria-selected="false" data-cursor="hover">Social Media</button>
+        <button class="filter" data-filter="cover" role="tab" aria-selected="false" data-cursor="hover">Book Cover</button>
+      </div>
+
+      <div class="portfolio" id="portfolioGrid">
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/av-logo.jpg" alt="AV monogram logo" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Monogram</span></div>
+            <h3>AV — Monogram Logo</h3>
+            <p>A bold metallic monogram on a textured dark surface, exploring depth and refined letterform construction.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/dk-logo.jpg" alt="DK logo design" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Mark</span></div>
+            <h3>DK — Brand Logo</h3>
+            <p>A confident lettermark balancing clean geometry with character — designed to read instantly at any scale.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/la-logo.jpg" alt="LA logo design" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Lettermark</span></div>
+            <h3>LA — Identity Mark</h3>
+            <p>A polished lettermark presented on a premium mockup, with attention to spacing, weight and visual rhythm.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/lb-logo.jpg" alt="LB logo design" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Lettermark</span></div>
+            <h3>LB — Brand Mark</h3>
+            <p>A clean, modern LB mark designed with a focus on legibility and a contemporary visual feel.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/n-logo.jpg" alt="N letter logo" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Letter</span></div>
+            <h3>N — Letter Logo</h3>
+            <p>A crisp single-letter mark engineered for versatility — works equally well in print, screen and signage.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/tri-logo.jpg" alt="Tri triangle logo" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Geometric</span></div>
+            <h3>Tri — Geometric Mark</h3>
+            <p>A minimal geometric mark built around a triangular form — a study in precision and balance.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/triangle-logo-1.jpg" alt="Triangle logo concept" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Concept</span></div>
+            <h3>Triangle — Concept Logo</h3>
+            <p>An exploratory logo built around a triangular silhouette, focused on form, negative space and silhouette.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="logo" data-cursor="text">
+          <div class="project__image">
+            <img src="images/zaini.jpg" alt="Zaini Nisar wordmark logo" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Logo</span><span class="tag">Wordmark</span></div>
+            <h3>Zaini Nisar — Wordmark</h3>
+            <p>A distinctive Z-form logo paired with a custom wordmark — a personal brand mark with a confident, modern feel.</p>
+            <span class="project__tools">Illustrator · Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="branding" data-cursor="text">
+          <div class="project__image">
+            <img src="images/aatiqa-menu-food.jpg" alt="Fast food restaurant menu design" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Brand Identity</span><span class="tag">Menu Design</span></div>
+            <h3>Fast Food — Restaurant Menu</h3>
+            <p>A vibrant restaurant menu layout pairing rich food imagery with clear typographic hierarchy across categories.</p>
+            <span class="project__tools">Photoshop · Illustrator</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="social" data-cursor="text">
+          <div class="project__image">
+            <img src="images/28-may-post-1.jpg" alt="Youm-e-Taqbeer 28 May social media poster" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Social Media</span><span class="tag">Poster</span></div>
+            <h3>Youm-e-Taqbeer — 28 May</h3>
+            <p>A patriotic social media post commemorating Pakistan's Day of Power, blending photography and bold typography.</p>
+            <span class="project__tools">Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="social" data-cursor="text">
+          <div class="project__image">
+            <img src="images/jummah-tul-widha-post.jpg" alt="Jummah-Tul-Wida Mubarak social post" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Social Media</span><span class="tag">Religious</span></div>
+            <h3>Jummah-Tul-Wida Mubarak</h3>
+            <p>A serene religious post built around mosque architecture, calligraphy and gentle typographic spacing.</p>
+            <span class="project__tools">Photoshop</span>
+          </div>
+        </article>
+
+        <article class="project reveal" data-category="cover" data-cursor="text">
+          <div class="project__image">
+            <img src="images/book-cover.jpg" alt="The History of Palestine book cover design" loading="lazy">
+            <span class="project__view">View Project →</span>
+          </div>
+          <div class="project__body">
+            <div class="project__meta"><span class="tag">Book Cover</span><span class="tag">Print</span></div>
+            <h3>The History of Palestine — Book Cover</h3>
+            <p>A full front-and-back book cover concept combining photo composition, typography and emotional storytelling.</p>
+            <span class="project__tools">Photoshop · Illustrator</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section process">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">04 — How I Work</span>
+        <h2 class="section__title">
+          From brief to<br>
+          <em>brand, in 4 steps.</em>
+        </h2>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-step reveal" data-delay="100">
+          <h3>Discover</h3>
+          <p>We talk through your story, audience, references, and goals — what you love, what you don't.</p>
+        </div>
+        <div class="process-step reveal" data-delay="200">
+          <h3>Define</h3>
+          <p>I translate the brief into a clear creative direction, mood, and design narrative to align on.</p>
+        </div>
+        <div class="process-step reveal" data-delay="300">
+          <h3>Design</h3>
+          <p>I craft thoughtful options, iterate on your feedback, and refine until every detail feels right.</p>
+        </div>
+        <div class="process-step reveal" data-delay="400">
+          <h3>Deliver</h3>
+          <p>Final files in every format you need — print-ready, web-ready, with a clean brand kit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services" class="section services">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">05 — Services</span>
+        <h2 class="section__title">
+          What I can help<br>
+          <em>you build.</em>
+        </h2>
+      </div>
+
+      <div class="service-grid">
+        <article class="service reveal" data-delay="100">
+          <span class="service__num" aria-hidden="true">01</span>
+          <div class="service__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Logo Design</h3>
+          <p>Memorable, versatile logos built around your story — custom marks designed to make your brand instantly recognizable.</p>
+          <ul class="service__feats">
+            <li>Multiple concepts</li><li>Vector files</li><li>Mini brand kit</li>
+          </ul>
+          <a class="service__cta" href="#contact" data-cursor="hover">
+            <span>Get a quote</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10m0 0L9 4m4 4l-4 4"/></svg>
+          </a>
+        </article>
+
+        <article class="service reveal" data-delay="200">
+          <span class="service__num" aria-hidden="true">02</span>
+          <div class="service__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          </div>
+          <h3>Brand Identity</h3>
+          <p>Cohesive visual systems including logo, color palette, typography, and a polished brand guideline document.</p>
+          <ul class="service__feats">
+            <li>Logo</li><li>Palette</li><li>Typography</li><li>Guidelines</li>
+          </ul>
+          <a class="service__cta" href="#contact" data-cursor="hover">
+            <span>Get a quote</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10m0 0L9 4m4 4l-4 4"/></svg>
+          </a>
+        </article>
+
+        <article class="service reveal" data-delay="300">
+          <span class="service__num" aria-hidden="true">03</span>
+          <div class="service__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+          </div>
+          <h3>Social Media Design</h3>
+          <p>Eye-catching Instagram posts, banners, and story templates designed to grow your audience and engagement.</p>
+          <ul class="service__feats">
+            <li>Post grids</li><li>Stories</li><li>Banners</li>
+          </ul>
+          <a class="service__cta" href="#contact" data-cursor="hover">
+            <span>Get a quote</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10m0 0L9 4m4 4l-4 4"/></svg>
+          </a>
+        </article>
+
+        <article class="service reveal" data-delay="400">
+          <span class="service__num" aria-hidden="true">04</span>
+          <div class="service__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+          </div>
+          <h3>Cover Letter Design</h3>
+          <p>Professional, polished cover letters with clean layouts that help you stand out and make a strong first impression.</p>
+          <ul class="service__feats">
+            <li>Layout</li><li>Typography</li><li>Print-ready</li>
+          </ul>
+          <a class="service__cta" href="#contact" data-cursor="hover">
+            <span>Get a quote</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10m0 0L9 4m4 4l-4 4"/></svg>
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE TIMELINE ============ -->
+  <section class="section experience-section">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">06 — Experience</span>
+        <h2 class="section__title">
+          A short<br>
+          <em>creative journey.</em>
+        </h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal" data-delay="100">
+          <h3>Freelance Graphic Designer</h3>
+          <p>Working remotely with clients worldwide on logos, brand identities, social content, and print collateral.</p>
+        </div>
+        <div class="timeline-item reveal" data-delay="200">
+          <h3>Brand Identity Specialist</h3>
+          <p>Focused deeply on identity systems — refined a personal craft for logo construction and visual systems.</p>
+        </div>
+        <div class="timeline-item reveal" data-delay="300">
+          <h3>Started Designing Professionally</h3>
+          <p>Began taking on client work — social media artwork, posters, and small-business identity projects.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" class="section testimonials">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">07 — Testimonials</span>
+        <h2 class="section__title">
+          Kind words from<br>
+          <em>kind clients.</em>
+        </h2>
+      </div>
+
+      <div class="testimonial-grid">
+        <figure class="testimonial reveal" data-delay="100">
+          <div class="quote-mark" aria-hidden="true">"</div>
+          <div class="testimonial__stars" aria-label="5 out of 5">★★★★★</div>
+          <blockquote>
+            Aatiqa understood my vision instantly and delivered a logo that captured exactly what I wanted. The whole process was smooth and she was always quick to respond.
+          </blockquote>
+          <figcaption>
+            <div class="avatar" style="background:linear-gradient(135deg,#FF5A36,#FFB199)">ZN</div>
+            <div>
+              <strong>Zaini Nisar</strong>
+              <span>Founder · Personal Brand</span>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="testimonial reveal" data-delay="200">
+          <div class="quote-mark" aria-hidden="true">"</div>
+          <div class="testimonial__stars" aria-label="5 out of 5">★★★★★</div>
+          <blockquote>
+            The book cover Aatiqa designed for me was striking and emotionally powerful — it captured the spirit of the story perfectly. I'd recommend her to anyone who values thoughtful design.
+          </blockquote>
+          <figcaption>
+            <div class="avatar" style="background:linear-gradient(135deg,#8E7BFF,#5BE0FF)">HR</div>
+            <div>
+              <strong>Hassan Raza</strong>
+              <span>Author · Independent Publisher</span>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="testimonial reveal" data-delay="300">
+          <div class="quote-mark" aria-hidden="true">"</div>
+          <div class="testimonial__stars" aria-label="5 out of 5">★★★★★</div>
+          <blockquote>
+            Aatiqa transformed my Instagram presence with a beautiful, cohesive design. Affordable, talented, and a pleasure to work with — exactly the freelancer I'd been searching for.
+          </blockquote>
+          <figcaption>
+            <div class="avatar" style="background:linear-gradient(135deg,#4ADE80,#0F2A2E)">SM</div>
+            <div>
+              <strong>Sara Malik</strong>
+              <span>Brand Owner · Lifestyle Studio</span>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <div class="contact__grid">
+        <div class="contact__intro reveal">
+          <span class="eyebrow">08 — Contact</span>
+          <h2 class="section__title">
+            Let's create<br>
+            <em>something great.</em>
+          </h2>
+          <p class="lead">
+            Got a project in mind? I'd love to hear about it. Send a brief and I'll get back within <strong style="color:var(--text)">24 hours</strong>.
+          </p>
+
+          <div class="contact__details">
+            <a href="mailto:aatiqaaslam14@gmail.com" class="contact__line" data-cursor="hover">
+              <span>Email</span>
+              <strong>aatiqaaslam14@gmail.com</strong>
+            </a>
+            <a href="tel:+923155299918" class="contact__line" data-cursor="hover">
+              <span>Phone</span>
+              <strong>0315-5299918</strong>
+            </a>
+            <div class="contact__line">
+              <span>Working</span>
+              <strong>Remote · Worldwide</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <form class="contact__form reveal" data-delay="200" id="contactForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+          <input type="hidden" name="access_key" value="a7187cb9-c10d-4014-a758-a3a3c44f42c7" />
+          <input type="hidden" name="from_name" value="Portfolio Contact Form" />
+          <input type="hidden" name="subject" value="New inquiry from your portfolio site" />
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="field">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" required placeholder="Jane Doe" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="jane@company.com" autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Project inquiry" />
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Tell me about your project, timeline, and budget..."></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full btn-magnetic" data-cursor="hover">
+            Send Message
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <p class="form-status" id="formStatus" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#home" class="nav__logo" data-cursor="hover">
+          <span class="logo-mark">A</span>
+          <span class="logo-text">atiqa<span class="dot">.</span></span>
+        </a>
+        <p>Freelance graphic designer crafting visuals worth remembering. Based in Islamabad — working worldwide.</p>
+      </div>
+
+      <div class="footer__links">
+        <h4>Navigate</h4>
+        <a href="#about" data-cursor="hover">About</a>
+        <a href="#skills" data-cursor="hover">Skills</a>
+        <a href="#work" data-cursor="hover">Work</a>
+        <a href="#services" data-cursor="hover">Services</a>
+        <a href="#contact" data-cursor="hover">Contact</a>
+      </div>
+
+      <div class="footer__contact">
+        <h4>Get In Touch</h4>
+        <a href="mailto:aatiqaaslam14@gmail.com" data-cursor="hover">aatiqaaslam14@gmail.com</a>
+        <a href="tel:+923155299918" data-cursor="hover">0315-5299918</a>
+        <span class="footer__remote">Available for freelance projects worldwide</span>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Aatiqa Aslam. All rights reserved.</span>
+      <span>Designed &amp; built with care.</span>
+    </div>
+  </footer>
+
+  <a href="#home" class="back-to-top" id="backToTop" aria-label="Back to top" data-cursor="hover">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </a>
+
+  <!-- ============ PROJECT LIGHTBOX ============ -->
+  <div class="project-modal" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
+    <div class="project-modal__backdrop" data-modal-close></div>
+    <div class="project-modal__panel" role="document">
+      <button type="button" class="project-modal__close" data-modal-close aria-label="Close project view" data-cursor="hover">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="project-modal__media">
+        <img id="modalImage" src="" alt="" />
+      </div>
+      <div class="project-modal__info">
+        <span class="project-modal__eyebrow" id="modalEyebrow">Selected work</span>
+        <h3 class="project-modal__title" id="modalTitle">Project Title</h3>
+        <div class="project-modal__tags" id="modalTags"></div>
+        <p class="project-modal__desc" id="modalDesc"></p>
+        <div class="project-modal__tools" id="modalTools"></div>
+        <a href="#contact" class="project-modal__cta" data-modal-close data-cursor="hover">
+          Want something similar?
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10m0 0L9 4m4 4l-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="hero-scene.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
