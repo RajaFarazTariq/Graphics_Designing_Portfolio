@@ -5,6 +5,12 @@
 (function () {
   'use strict';
 
+  // Force scroll to top on page load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   const $  = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
