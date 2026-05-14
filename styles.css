@@ -480,7 +480,7 @@ main, section, header, footer, nav { position: relative; z-index: 1; }
 html:not([data-theme="light"]) .icon-sun { opacity: 1; transform: rotate(0); }
 html:not([data-theme="light"]) .icon-moon { opacity: 0; transform: rotate(-30deg); position: absolute; }
 
-.menu-toggle { display: none; flex-direction: column; gap: 5px; padding: 0; justify-content: center; align-items: center; z-index: 1000; }
+.menu-toggle { display: none; flex-direction: column; gap: 5px; padding: 0; justify-content: center; align-items: center; z-index: 10000; }
 .menu-toggle span {
   display: block; width: 18px; height: 1.6px;
   background: currentColor;
@@ -496,20 +496,26 @@ html:not([data-theme="light"]) .icon-moon { opacity: 0; transform: rotate(-30deg
   .menu-toggle { display: inline-flex; }
   .nav__menu {
     position: fixed;
-    inset: 0;
-    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 22px;
-    background: #07070c;
-    backdrop-filter: none;
+    background: #07070c !important;
+    backdrop-filter: none !important;
     opacity: 0;
     pointer-events: none;
     transition: opacity 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: opacity;
+    overflow: hidden;
   }
-  [data-theme="light"] .nav__menu { background: #f5f4f1; }
+  [data-theme="light"] .nav__menu { background: #f5f4f1 !important; }
   .nav__menu.is-open { opacity: 1; pointer-events: auto; }
   .nav__menu .nav__link { font-size: 26px; font-family: var(--font-display); transition: color 220ms ease-out; will-change: color; }
   .nav__cta { display: none; }
