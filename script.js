@@ -153,10 +153,15 @@
 
   if (menuToggle && navMenu) {
     menuToggle.addEventListener('click', () => {
-      const open = menuToggle.classList.toggle('is-open');
-      navMenu.classList.toggle('is-open', open);
-      menuToggle.setAttribute('aria-expanded', String(open));
-      document.body.style.overflow = open ? 'hidden' : '';
+      const isCurrentlyOpen = menuToggle.classList.contains('is-open');
+      if (isCurrentlyOpen) {
+        closeMenu();
+      } else {
+        menuToggle.classList.add('is-open');
+        navMenu.classList.add('is-open');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
     });
     $$('.nav__link', navMenu).forEach(link => link.addEventListener('click', closeMenu));
   }

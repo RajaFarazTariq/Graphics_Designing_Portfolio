@@ -480,7 +480,7 @@ main, section, header, footer, nav { position: relative; z-index: 1; }
 html:not([data-theme="light"]) .icon-sun { opacity: 1; transform: rotate(0); }
 html:not([data-theme="light"]) .icon-moon { opacity: 0; transform: rotate(-30deg); position: absolute; }
 
-.menu-toggle { display: none; flex-direction: column; gap: 5px; padding: 0; }
+.menu-toggle { display: none; flex-direction: column; gap: 5px; padding: 0; justify-content: center; align-items: center; }
 .menu-toggle span {
   display: block; width: 18px; height: 1.6px;
   background: currentColor;
@@ -1983,7 +1983,7 @@ a.contact__line:hover {
 }
 @media (max-width: 760px) {
   .footer__inner { grid-template-columns: 1fr; }
-  .footer__bottom { flex-direction: column; align-items: flex-start; }
+  .footer__bottom { flex-direction: column; align-items: flex-start; padding-left: 20px; padding-right: 20px; }
 }
 
 /* ---------- 21. Back to top + Modal ---------- */
