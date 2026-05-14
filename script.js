@@ -2,14 +2,31 @@
    Aatiqa Aslam — Portfolio interactivity (premium build)
    ========================================================= */
 
+// Disable browser scroll restoration and force top immediately
+if (history.scrollRestoration) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 (function () {
   'use strict';
 
-  // Force scroll to top on page load
-  if (history.scrollRestoration) {
-    history.scrollRestoration = 'manual';
+  // Force scroll to top on DOMContentLoaded and load
+  const forceScrollTop = () => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', forceScrollTop);
+  } else {
+    forceScrollTop();
   }
-  window.scrollTo(0, 0);
+  window.addEventListener('load', forceScrollTop);
+  
+  // Force scroll top again after a short delay to catch all cases
+  setTimeout(forceScrollTop, 100);
 
   const $  = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
