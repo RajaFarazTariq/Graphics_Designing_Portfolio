@@ -11,6 +11,17 @@ A stunning interactive 3D graphics portfolio showcasing creative design work and
 - **Professional Portfolio**: Showcase of graphics design work
 - **Fast Performance**: Optimized for quick loading and smooth interactions
 
+## 🗂️ Admin Panel (CMS)
+
+All portfolio content can be managed from a built-in admin panel at `/admin` — without touching code and without changing the design.
+
+```bash
+npm install && npm run build && npm start
+# site:  http://localhost:3000        admin: http://localhost:3000/admin
+```
+
+See **[CMS.md](CMS.md)** for setup, features, architecture, security and deployment.
+
 ## 🛠️ Technologies Used
 
 - **Three.js** - 3D graphics library for WebGL rendering

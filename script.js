@@ -313,11 +313,12 @@ window.scrollTo(0, 0);
       const tagEls = projectEl.querySelectorAll('.tag');
 
       if (img) {
-        modalImage.src = img.src;
+        // CMS: a separate "main image" / "full description" may be attached as data attributes.
+        modalImage.src = projectEl.dataset.fullImage || img.src;
         modalImage.alt = img.alt || '';
       }
       modalTitle.textContent = titleEl ? titleEl.textContent : '';
-      modalDesc.textContent = descEl ? descEl.textContent : '';
+      modalDesc.textContent = projectEl.dataset.fullDesc || (descEl ? descEl.textContent : '');
       modalTools.textContent = toolsEl ? toolsEl.textContent : '';
 
       modalTags.innerHTML = '';
@@ -400,6 +401,16 @@ window.scrollTo(0, 0);
       const accessKeyInput = form.querySelector('input[name="access_key"]');
       const accessKey = accessKeyInput ? accessKeyInput.value : '';
       const isConfigured = accessKey && !/YOUR_/i.test(accessKey);
+
+      // CMS: keep a copy in the admin inbox. Best-effort — never blocks or changes the email flow.
+      try {
+        fetch('api/public/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message, botcheck: form.botcheck && form.botcheck.checked ? 1 : '' }),
+          keepalive: true
+        }).catch(() => {});
+      } catch (_) { /* ignore */ }
 
       try {
         if (isConfigured) {
