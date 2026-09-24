@@ -1,16 +1,14 @@
-import { PORT } from './config.js';
-import { openDatabase } from './db/index.js';
-import { seedIfEmpty } from './db/seed.js';
+import { PORT, STORAGE } from './config.js';
+import { openContentDb } from './bootstrap.js';
 import { ensureAdmin } from './auth.js';
 import { createApp } from './app.js';
 
-const db = openDatabase();
-seedIfEmpty(db);
+const db = openContentDb();
 await ensureAdmin(db);
 
 const server = createApp(db).listen(PORT, () => {
   console.log(`Portfolio:   http://localhost:${PORT}/`);
-  console.log(`Admin panel: http://localhost:${PORT}/admin`);
+  console.log(`Admin panel: http://localhost:${PORT}/admin   (storage: ${STORAGE})`);
 });
 
 const shutdown = () => server.close(() => { db.close(); process.exit(0); });

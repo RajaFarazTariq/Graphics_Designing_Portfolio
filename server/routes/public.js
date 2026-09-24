@@ -3,6 +3,7 @@ import { loadContent } from '../render/content.js';
 import { messageSchema, parse } from '../validation.js';
 import { rateLimiter } from '../auth.js';
 import { logActivity } from '../db/index.js';
+import { IS_GITHUB } from '../config.js';
 
 const messageLimiter = rateLimiter({ windowMs: 10 * 60 * 1000, max: 5, message: 'Too many messages. Please try again later.' });
 
@@ -49,7 +50,8 @@ export function publicRouter(db) {
   // Copy of contact-form submissions for the admin inbox (the email delivery via Web3Forms is unchanged).
   router.post('/messages', (req, res) => {
     const contact = loadContent(db).settings.contact;
-    if (!contact.store_messages) return res.status(202).json({ ok: true, stored: false });
+    // GitHub mode never stores messages: the repo is public and every write would be a commit.
+    if (IS_GITHUB || !contact.store_messages) return res.status(202).json({ ok: true, stored: false });
     if (req.body?.botcheck) return res.status(202).json({ ok: true, stored: false });
     const limited = messageLimiter(req.ip);
     if (limited) return res.status(429).json({ error: limited.message });

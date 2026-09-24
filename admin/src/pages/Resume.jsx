@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { CheckCircle2, Download, FileText, Pencil, Trash2, UploadCloud } from 'lucide-react';
-import { api, mediaSrc, formatBytes, timeAgo } from '../lib/api.js';
+import { api, mediaSrc, formatBytes, timeAgo, deployment } from '../lib/api.js';
 import { useApi } from '../lib/hooks.js';
 import { useConfirm, useToast } from '../components/feedback.jsx';
 import { Button, EmptyState, ErrorState, Notice, PageHeader, Spinner, Toggle } from '../components/ui.jsx';
@@ -17,7 +17,7 @@ export default function Resume() {
   const upload = async (file) => {
     if (!file) return;
     if (file.type && file.type !== 'application/pdf') { toast.error('Please choose a PDF file.'); return; }
-    if (file.size > 15 * 1024 * 1024) { toast.error('The PDF is larger than 15 MB.'); return; }
+    if (file.size > deployment.maxDocumentMb * 1024 * 1024) { toast.error(`The PDF is larger than ${deployment.maxDocumentMb} MB.`); return; }
     const fd = new FormData();
     fd.append('file', file);
     fd.append('label', label || file.name.replace(/\.pdf$/i, ''));
@@ -59,7 +59,7 @@ export default function Resume() {
       <PageHeader title="Resume / CV" description="The active resume is linked from the “Download CV” and “View Full Resume” buttons on the site." />
 
       <div className="card" style={{ marginBottom: 20 }}>
-        <div className="card__head"><div><h2>Upload a new resume</h2><p>PDF only, up to 15 MB.</p></div></div>
+        <div className="card__head"><div><h2>Upload a new resume</h2><p>PDF only, up to {deployment.maxDocumentMb} MB.</p></div></div>
         <div className="card__body stack" style={{ gap: 14 }}>
           <input className="input" placeholder="Label (optional), e.g. Resume — 2026" value={label} onChange={e => setLabel(e.target.value)} maxLength={120} aria-label="Resume label" />
           <Toggle checked={activate} onChange={setActivate} label="Make it the active resume" description="Replaces the current one on the site immediately." />

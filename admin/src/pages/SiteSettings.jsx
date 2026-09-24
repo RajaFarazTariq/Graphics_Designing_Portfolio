@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { api } from '../lib/api.js';
+import { api, deployment } from '../lib/api.js';
 import { useApi, useForm, useUnsavedGuard } from '../lib/hooks.js';
 import { useConfirm, useToast } from '../components/feedback.jsx';
 import { ImageField } from '../components/MediaPicker.jsx';
@@ -112,7 +112,7 @@ function SettingsGroup({ group, initial, onSaved }) {
             <TextField className="full" form={form} name="form_access_key" label="Web3Forms access key" max={80} hint="Delivers form submissions to your email. Leave empty to fall back to opening the visitor's mail app." />
             <TextField form={form} name="form_from_name" label="Email sender name" max={80} />
             <TextField form={form} name="form_subject" label="Email subject" max={160} />
-            <div className="full"><Toggle checked={!!v.store_messages} onChange={x => form.set('store_messages', x)} label="Keep a copy in the admin inbox" description="Every submission is also saved under Messages." /></div>
+            {deployment.messages && <div className="full"><Toggle checked={!!v.store_messages} onChange={x => form.set('store_messages', x)} label="Keep a copy in the admin inbox" description="Every submission is also saved under Messages." /></div>}
           </div>
         )}
 

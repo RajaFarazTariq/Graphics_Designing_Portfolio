@@ -117,7 +117,42 @@ Imports the original content into a throw-away database, renders the page, and c
 
 ---
 
-## Deployment
+## Free hosting on Vercel (GitHub mode) — recommended
+
+On Vercel the admin panel runs at **`/admin`** for free, the same way a Git-based CMS works:
+
+- You sign in with **GitHub** (only the repo owner, `ADMIN_GITHUB_USERS`, with write access to the repo).
+- Content lives in **`content/cms.json`** and uploaded files in **`uploads/`** inside this repository.
+- Every save in the admin panel is **one commit** to `main`; Vercel rebuilds the static site and the change is live **~1 minute** later. The admin shows a "Publishing…" badge meanwhile; your full change history is the git history of `content/cms.json` (so any change can be reverted).
+- Drafts can be checked with **Preview** (`/preview`) before publishing.
+
+Differences from running your own server: uploads are limited to **4 MB** (Vercel request limit), contact-form copies aren't stored (emails still arrive via Web3Forms), and — since the repository is public — draft content is visible in `content/cms.json` on GitHub.
+
+### One-time setup
+
+1. **GitHub OAuth app** (for the "Sign in with GitHub" button) — github.com → Settings → Developer settings → OAuth Apps → *New OAuth App*:
+   - Homepage URL: `https://aatiqaaslam-studio.vercel.app`
+   - Authorization callback URL: `https://aatiqaaslam-studio.vercel.app/api/admin/auth/github/callback`
+   - Create a client secret.
+2. **Vercel → Project → Settings → Environment Variables** (Production):
+
+   | Name | Value |
+   |---|---|
+   | `CMS_STORAGE` | `github` |
+   | `JWT_SECRET` | a long random string (e.g. from `openssl rand -hex 32`) |
+   | `GITHUB_REPO` | `RajaFarazTariq/Graphics_Designing_Portfolio` |
+   | `GITHUB_BRANCH` | `main` |
+   | `GITHUB_CLIENT_ID` | from step 1 |
+   | `GITHUB_CLIENT_SECRET` | from step 1 |
+   | `ADMIN_GITHUB_USERS` | `RajaFarazTariq` (comma-separate to allow more) |
+
+3. Redeploy. Open `https://aatiqaaslam-studio.vercel.app/admin` and sign in.
+
+Without steps 1's variables you can still sign in with **"Use an access token instead"**: a fine-grained token limited to this repository with *Contents: Read and write*.
+
+Content file tools: `npm run content:snapshot` writes `content/cms.json` from your local database (to publish local edits); `-- --seed` rebuilds it from the original content.
+
+## Deployment on your own server
 
 The admin panel needs the Node server running (any Node host with a **persistent disk** for `data/` and `uploads/` — e.g. a VPS, Render/Railway with a volume, Fly.io with a volume).
 

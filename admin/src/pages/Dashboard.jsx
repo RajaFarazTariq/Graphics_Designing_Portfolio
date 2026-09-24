@@ -25,7 +25,7 @@ function StatCard({ to, icon: Icon, label, value, sub }) {
 }
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, config, isGithub } = useAuth();
   const { data, loading, error, reload } = useApi('/dashboard');
   if (error) return <ErrorState error={error} onRetry={reload} />;
   if (loading && !data) return <Spinner />;
@@ -49,10 +49,14 @@ export default function Dashboard() {
         <StatCard to="/projects" icon={FolderKanban} label="Projects" value={c.projects} sub={`${c.projects_published} published · ${c.projects_draft} draft`} />
         <StatCard to="/projects?featured=1" icon={Star} label="Featured projects" value={c.projects_featured} sub="Marked as featured" />
         <StatCard to="/skills" icon={Sparkles} label="Skills" value={c.skills} />
-        <StatCard to="/messages" icon={Inbox} label="Messages" value={c.messages} sub={c.messages_unread ? `${c.messages_unread} unread` : 'All read'} />
+        {isGithub
+          ? <StatCard to="/services" icon={Wrench} label="Services" value={c.services} />
+          : <StatCard to="/messages" icon={Inbox} label="Messages" value={c.messages} sub={c.messages_unread ? `${c.messages_unread} unread` : 'All read'} />}
         <StatCard to="/experience" icon={Briefcase} label="Experience" value={c.experiences} />
         <StatCard to="/education" icon={GraduationCap} label="Education" value={c.education} />
-        <StatCard to="/services" icon={Wrench} label="Services" value={c.services} />
+        {isGithub
+          ? <StatCard to="/media" icon={FileText} label="Media files" value={c.media} />
+          : <StatCard to="/services" icon={Wrench} label="Services" value={c.services} />}
         <StatCard to="/testimonials" icon={MessageSquareQuote} label="Testimonials" value={c.testimonials} />
       </div>
 
@@ -73,6 +77,15 @@ export default function Dashboard() {
         </div>
 
         <div className="stack">
+          {isGithub ? (
+            <div className="card">
+              <div className="card__head"><div><h2>Publishing</h2><p>Saved changes go live automatically</p></div><Activity size={18} className="muted" /></div>
+              <div className="card__body stack" style={{ gap: 10 }}>
+                <div>Every save is committed to <a href={`https://github.com/${config.repo}`} target="_blank" rel="noreferrer">{config.repo}</a> and Vercel rebuilds the site — changes appear about a minute later.</div>
+                <a className="btn btn--secondary btn--sm" style={{ alignSelf: 'flex-start' }} href={`https://github.com/${config.repo}/commits/${config.branch}/content/cms.json`} target="_blank" rel="noreferrer">View change history</a>
+              </div>
+            </div>
+          ) : (
           <div className="card">
             <div className="card__head"><div><h2>Latest messages</h2><p>From the contact form</p></div><Link to="/messages" className="btn btn--ghost btn--sm">View all</Link></div>
             {data.messages.length ? (
@@ -87,6 +100,7 @@ export default function Dashboard() {
               </ul>
             ) : <EmptyState icon={Inbox} title="No messages yet" text="New contact form submissions will appear here." />}
           </div>
+          )}
           <div className="card">
             <div className="card__head"><div><h2>Active resume</h2><p>Linked from the "Download CV" buttons</p></div><FileText size={18} className="muted" /></div>
             <div className="card__body row" style={{ justifyContent: 'space-between' }}>

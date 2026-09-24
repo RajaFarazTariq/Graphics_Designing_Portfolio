@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Check, FileText, ImagePlus, Trash2, UploadCloud } from 'lucide-react';
-import { api, qs, mediaSrc, formatBytes } from '../lib/api.js';
+import { api, qs, mediaSrc, formatBytes, deployment } from '../lib/api.js';
 import { useApi } from '../lib/hooks.js';
 import { useToast } from './feedback.jsx';
 import { Button, Field, Modal, Pagination, SearchInput, Spinner, EmptyState, ErrorState } from './ui.jsx';
@@ -14,25 +14,32 @@ export function useUploader(kind = 'image') {
   const upload = async (fileList) => {
     const files = Array.from(fileList || []);
     if (!files.length) return [];
-    const maxMb = kind === 'document' ? 15 : 10;
-    const tooBig = files.filter(f => f.size > maxMb * 1024 * 1024);
-    if (tooBig.length) toast.error(`${tooBig.map(f => f.name).join(', ')} ${tooBig.length > 1 ? 'are' : 'is'} larger than ${maxMb} MB.`);
-    const ok = files.filter(f => f.size <= maxMb * 1024 * 1024);
+    const maxMbFor = (f) => (f.type === 'application/pdf' ? deployment.maxDocumentMb : deployment.maxImageMb);
+    const tooBig = files.filter(f => f.size > maxMbFor(f) * 1024 * 1024);
+    if (tooBig.length) toast.error(`${tooBig.map(f => f.name).join(', ')} ${tooBig.length > 1 ? 'are' : 'is'} larger than ${maxMbFor(tooBig[0])} MB.`);
+    const ok = files.filter(f => f.size <= maxMbFor(f) * 1024 * 1024);
     if (!ok.length) return [];
-    const fd = new FormData();
-    ok.forEach(f => fd.append('files', f));
+    // GitHub mode: one file per request (serverless request-size limit; each upload is one commit).
+    const batches = deployment.storage === 'github' ? ok.map(f => [f]) : [ok];
+    const items = [];
     setUploading(true);
     try {
-      const res = await api.upload(`/media${qs({ kind: kind === 'all' ? '' : kind })}`, fd);
-      res.errors?.forEach(e => toast.error(e));
-      const dupes = res.items.filter(i => i.duplicate).length;
-      const fresh = res.items.length - dupes;
+      for (const batch of batches) {
+        const fd = new FormData();
+        batch.forEach(f => fd.append('files', f));
+        try {
+          const res = await api.upload(`/media${qs({ kind: kind === 'all' ? '' : kind })}`, fd);
+          res.errors?.forEach(e => toast.error(e));
+          items.push(...res.items);
+        } catch (e) {
+          toast.error(e);
+        }
+      }
+      const dupes = items.filter(i => i.duplicate).length;
+      const fresh = items.length - dupes;
       if (fresh) toast.success(`${fresh} file${fresh > 1 ? 's' : ''} uploaded`);
       if (dupes) toast.info(`${dupes} file${dupes > 1 ? 's were' : ' was'} already in the library — reusing the existing copy.`);
-      return res.items;
-    } catch (e) {
-      toast.error(e);
-      return [];
+      return items;
     } finally {
       setUploading(false);
     }
@@ -57,7 +64,9 @@ export function Dropzone({ kind = 'image', multiple = true, onUploaded, compact 
       <div className="dropzone__icon">{uploading ? <UploadCloud size={20} className="spin" /> : <UploadCloud size={20} />}</div>
       <strong>{uploading ? 'Uploading…' : 'Drop files here or click to upload'}</strong>
       <div className="muted small" style={{ marginTop: 4 }}>
-        {kind === 'document' ? 'PDF up to 15 MB' : kind === 'all' ? 'JPG, PNG, WebP, GIF, AVIF up to 10 MB · PDF up to 15 MB' : 'JPG, PNG, WebP, GIF or AVIF — up to 10 MB each'}
+        {kind === 'document' ? `PDF up to ${deployment.maxDocumentMb} MB`
+          : kind === 'all' ? `JPG, PNG, WebP, GIF, AVIF up to ${deployment.maxImageMb} MB · PDF up to ${deployment.maxDocumentMb} MB`
+          : `JPG, PNG, WebP, GIF or AVIF — up to ${deployment.maxImageMb} MB each`}
       </div>
     </div>
   );

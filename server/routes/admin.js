@@ -13,6 +13,10 @@ import {
 } from '../auth.js';
 import { collectionRouter } from './collections.js';
 import { mediaRouter, upload, storeFile, removeMedia, mediaUsage } from './media.js';
+import { githubAuthRouter } from './github-auth.js';
+import { IS_GITHUB, GITHUB, ADMIN_GITHUB_USERS, LIMITS, STORAGE, UPLOAD_DIR } from '../config.js';
+import { getStore } from '../storage/github.js';
+import path from 'node:path';
 
 const httpError = (status, message, fields) => Object.assign(new Error(message), { status, fields });
 const loginLimiter = rateLimiter({ windowMs: 15 * 60 * 1000, max: 5, message: 'Too many failed sign-in attempts. Try again in a few minutes.' });
@@ -23,8 +27,24 @@ export function adminRouter(db, { onChange }) {
   const router = Router();
   router.use(requireCsrfHeader);
 
+  // What the login page / admin UI needs to know about this deployment.
+  router.get('/auth/config', (req, res) => {
+    res.json({
+      storage: STORAGE,
+      repo: IS_GITHUB ? GITHUB.repo : null,
+      branch: IS_GITHUB ? GITHUB.branch : null,
+      oauth: IS_GITHUB && !!GITHUB.clientId,
+      allowedUsers: IS_GITHUB ? ADMIN_GITHUB_USERS : [],
+      maxImageMb: Math.round(LIMITS.imageBytes / 1024 / 1024),
+      maxDocumentMb: Math.round(LIMITS.documentBytes / 1024 / 1024),
+      messages: !IS_GITHUB,
+    });
+  });
+  if (IS_GITHUB) router.use(githubAuthRouter());
+
   // ---------------- auth (public endpoints) ----------------
   router.post('/auth/login', async (req, res) => {
+    if (IS_GITHUB) throw httpError(400, 'This site uses GitHub sign-in.');
     const email = String(req.body?.email || '').trim().toLowerCase();
     const password = String(req.body?.password || '');
     if (!email || !password) throw httpError(400, 'Enter your email and password.');
@@ -51,11 +71,31 @@ export function adminRouter(db, { onChange }) {
   router.get('/auth/me', (req, res) => {
     const user = sessionUser(db, req);
     if (!user) return res.status(401).json({ error: 'Not signed in.' });
-    res.json({ user: { id: user.id, email: user.email, name: user.name, last_login_at: user.last_login_at } });
+    res.json({ user: { id: user.id, email: user.email, name: user.name, last_login_at: user.last_login_at, login: user.login, avatar: user.avatar } });
   });
 
   // ---------------- everything below requires a session ----------------
   router.use(requireAuth(db));
+
+  if (IS_GITHUB) {
+    router.use(['/auth/password', '/auth/account'], () => { throw httpError(400, 'Your account is managed on GitHub.'); });
+
+    // Uploaded files exist in the repo right away but only on the live site after Vercel redeploys,
+    // so the admin UI previews them through here.
+    router.get('/raw', async (req, res) => {
+      const rel = String(req.query.path || '');
+      if (!/^(uploads|images)\/[\w.-]+$/.test(rel)) throw httpError(400, 'Invalid file path.');
+      const types = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp', avif: 'image/avif', pdf: 'application/pdf' };
+      const type = types[rel.split('.').pop().toLowerCase()];
+      if (!type) throw httpError(400, 'Unsupported file type.');
+      const local = path.join(UPLOAD_DIR, path.basename(rel));
+      let buf = rel.startsWith('uploads/') && fs.existsSync(local) ? fs.readFileSync(local) : null;
+      if (!buf) buf = await getStore().readRaw(req.user.githubToken, rel);
+      if (!buf) throw httpError(404, 'File not found.');
+      res.set({ 'Content-Type': type, 'Cache-Control': 'private, max-age=3600', 'X-Content-Type-Options': 'nosniff' });
+      res.send(buf);
+    });
+  }
 
   router.put('/auth/password', async (req, res) => {
     const { current_password, new_password, confirm_password } = req.body || {};

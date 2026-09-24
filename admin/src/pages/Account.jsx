@@ -17,6 +17,38 @@ function strength(pw) {
 }
 
 export default function Account() {
+  const { isGithub } = useAuth();
+  return isGithub ? <GithubAccount /> : <LocalAccount />;
+}
+
+function GithubAccount() {
+  const { user, config, logout } = useAuth();
+  return (
+    <div className="content--narrow" style={{ margin: '0 auto' }}>
+      <PageHeader title="Admin Settings" description="This admin panel signs in with GitHub and saves every change as a commit." />
+      <div className="stack">
+        <div className="card">
+          <div className="card__head"><div><h2>Signed in as</h2><p>Access is limited to {config.allowedUsers.map(u => '@' + u).join(', ')}.</p></div><UserCog size={18} className="muted" /></div>
+          <div className="card__body row" style={{ gap: 14 }}>
+            {user?.avatar && <img src={user.avatar} alt="" width="48" height="48" style={{ borderRadius: '50%' }} />}
+            <div style={{ flex: 1 }}><strong>{user?.name}</strong><div className="muted">@{user?.login}</div></div>
+            <Button onClick={logout}>Sign out</Button>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card__head"><div><h2>Publishing</h2><p>How your changes reach the live site.</p></div><KeyRound size={18} className="muted" /></div>
+          <div className="card__body stack" style={{ gap: 10 }}>
+            <div>Content is stored in <a href={`https://github.com/${config.repo}/blob/${config.branch}/content/cms.json`} target="_blank" rel="noreferrer">content/cms.json</a> and <code>uploads/</code> on the <strong>{config.branch}</strong> branch of <a href={`https://github.com/${config.repo}`} target="_blank" rel="noreferrer">{config.repo}</a>.</div>
+            <div>Every save creates one commit; Vercel rebuilds the site automatically — changes are live about a minute later. You can see (and undo) every change in the <a href={`https://github.com/${config.repo}/commits/${config.branch}/content/cms.json`} target="_blank" rel="noreferrer">commit history</a>.</div>
+            <div className="muted small">Your GitHub access is managed on GitHub: revoke it any time under Settings → Applications (or delete the access token you used).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LocalAccount() {
   const { user, setUser } = useAuth();
   const toast = useToast();
   const account = useForm({ name: user?.name || '', email: user?.email || '', current_password: '' });

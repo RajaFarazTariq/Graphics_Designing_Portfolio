@@ -1,16 +1,20 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { api, setUnauthorizedHandler } from './api.js';
+import { api, setUnauthorizedHandler, setDeployment } from './api.js';
 import { Spinner } from '../components/ui.jsx';
 
 const AuthCtx = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined); // undefined = checking, null = signed out
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    api.get('/auth/me').then(r => setUser(r.user)).catch(() => setUser(null));
     setUnauthorizedHandler(() => setUser(null));
+    api.get('/auth/config')
+      .then(cfg => { setDeployment(cfg); setConfig(cfg); })
+      .catch(() => setConfig({ storage: 'local' }))
+      .finally(() => api.get('/auth/me').then(r => setUser(r.user)).catch(() => setUser(null)));
   }, []);
 
   const login = useCallback(async (email, password) => {
@@ -19,11 +23,18 @@ export function AuthProvider({ children }) {
     return r.user;
   }, []);
 
+  const loginWithToken = useCallback(async (token) => {
+    const r = await api.post('/auth/token', { token });
+    setUser(r.user);
+    return r.user;
+  }, []);
+
   const logout = useCallback(async () => {
     try { await api.post('/auth/logout'); } finally { setUser(null); }
   }, []);
 
-  return <AuthCtx.Provider value={{ user, setUser, login, logout }}>{children}</AuthCtx.Provider>;
+  const isGithub = config?.storage === 'github';
+  return <AuthCtx.Provider value={{ user, setUser, login, loginWithToken, logout, config, isGithub }}>{children}</AuthCtx.Provider>;
 }
 
 export const useAuth = () => useContext(AuthCtx);
