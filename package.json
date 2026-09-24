@@ -1,0 +1,30 @@
+{
+  "name": "aatiqa-portfolio-cms",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aatiqa Aslam portfolio + admin CMS",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server/index.js",
+    "admin:dev": "npm --prefix admin run dev",
+    "build": "npm --prefix admin install && npm --prefix admin run build",
+    "verify:ui": "node --disable-warning=ExperimentalWarning server/scripts/verify-ui.js",
+    "reset-password": "node --disable-warning=ExperimentalWarning server/scripts/reset-password.js",
+    "export": "node --disable-warning=ExperimentalWarning server/scripts/export-static.js",
+    "test": "node --disable-warning=ExperimentalWarning --test server/tests/api.test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "image-size": "^2.0.4",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
+    "zod": "^4.6.5"
+  }
+}
