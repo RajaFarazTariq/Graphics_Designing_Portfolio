@@ -5,7 +5,7 @@
   "description": "Aatiqa Aslam portfolio + admin CMS",
   "type": "module",
   "engines": {
-    "node": ">=22.13"
+    "node": "22.x"
   },
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning server/index.js",
@@ -15,7 +15,9 @@
     "verify:ui": "node --disable-warning=ExperimentalWarning server/scripts/verify-ui.js",
     "reset-password": "node --disable-warning=ExperimentalWarning server/scripts/reset-password.js",
     "export": "node --disable-warning=ExperimentalWarning server/scripts/export-static.js",
-    "test": "node --disable-warning=ExperimentalWarning --test server/tests/api.test.js"
+    "test": "node --disable-warning=ExperimentalWarning --test server/tests/api.test.js server/tests/github.test.js",
+    "content:snapshot": "node --disable-warning=ExperimentalWarning server/scripts/snapshot.js",
+    "build:vercel": "npm run build && npm run export"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

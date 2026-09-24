@@ -23,6 +23,8 @@ async function request(method, path, body, { raw = false } = {}) {
   } catch {
     throw new ApiError('Cannot reach the server. Check your connection and try again.', 0);
   }
+  const commit = res.headers.get('X-CMS-Commit');
+  if (commit) window.dispatchEvent(new CustomEvent('cms:committed', { detail: { sha: commit, at: Date.now() } }));
   if (res.status === 204) return null;
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -48,8 +50,21 @@ export const qs = (params) => {
   return str ? `?${str}` : '';
 };
 
-/** Media urls are stored relative to the site root (e.g. images/x.jpg). */
-export const mediaSrc = (url) => (!url ? '' : /^(https?:)?\//.test(url) ? url : `/${url}`);
+// Deployment info from /auth/config (storage mode, limits…), set once at start-up.
+export const deployment = { storage: 'local', maxImageMb: 10, maxDocumentMb: 15, messages: true, repo: null, branch: null };
+export const setDeployment = (cfg) => Object.assign(deployment, cfg || {});
+
+/**
+ * Media urls are stored relative to the site root (e.g. images/x.jpg).
+ * In GitHub mode a new upload only reaches the live site after Vercel redeploys,
+ * so the admin previews uploads straight from the repository.
+ */
+export const mediaSrc = (url) => {
+  if (!url) return '';
+  if (/^(https?:)?\//.test(url)) return url;
+  if (deployment.storage === 'github' && url.startsWith('uploads/')) return `/api/admin/raw?path=${encodeURIComponent(url)}`;
+  return `/${url}`;
+};
 
 export const formatBytes = (n) => {
   if (!n && n !== 0) return '';

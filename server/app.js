@@ -3,12 +3,60 @@ import path from 'node:path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import { ROOT_DIR, UPLOAD_DIR, ADMIN_DIST, IS_PROD } from './config.js';
+import { ROOT_DIR, UPLOAD_DIR, REPO_UPLOAD_DIR, ADMIN_DIST, IS_PROD, IS_GITHUB } from './config.js';
 import { loadContent } from './render/content.js';
 import { renderPortfolio } from './render/portfolio.js';
 import { sessionUser } from './auth.js';
 import { adminRouter } from './routes/admin.js';
 import { publicRouter } from './routes/public.js';
+import { getStore } from './storage/github.js';
+
+/**
+ * GitHub mode: every authenticated admin request first syncs the in-memory DB with the branch,
+ * and every successful change is committed to GitHub *before* the response is sent.
+ * Requests are processed one at a time so commits never race each other.
+ */
+function githubSync(db, onChange) {
+  const store = getStore();
+  let chain = Promise.resolve();
+  return (req, res, next) => {
+    const user = sessionUser(db, req);
+    if (!user?.githubToken) return next(); // sign-in routes, or rejected later by requireAuth
+    const finished = new Promise(resolve => { res.once('finish', resolve); res.once('close', resolve); });
+    chain = chain.then(async () => {
+      try {
+        if (await store.ensureFresh(db, user.githubToken)) onChange();
+      } catch (e) {
+        next(e);
+        return finished;
+      }
+      if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+        const end = res.end.bind(res);
+        let intercepted = false;
+        res.end = (chunk, encoding, cb) => {
+          if (intercepted) return end(chunk, encoding, cb);
+          intercepted = true;
+          if (res.statusCode >= 400) { store.discardPending(); return end(chunk, encoding, cb); }
+          store.persist(db, user.githubToken)
+            .then((sha) => { if (sha) res.setHeader('X-CMS-Commit', sha); end(chunk, encoding, cb); })
+            .catch((err) => {
+              // The change could not be saved to GitHub — throw away the in-memory edit.
+              store.invalidate();
+              onChange();
+              const body = JSON.stringify({ error: `Not saved: ${err.message}` });
+              res.statusCode = err.status && err.status < 500 ? err.status : 502;
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+              res.setHeader('Content-Length', Buffer.byteLength(body));
+              end(body);
+            });
+          return res;
+        };
+      }
+      next();
+      return finished;
+    });
+  };
+}
 
 // Only these repo files are publicly reachable (never server/, data/, admin source, package files…).
 const PUBLIC_FILE = /^\/(?:[\w.-]+\.(?:css|js|jpe?g|png|webp|gif|avif|svg|ico|pdf|txt|xml|webmanifest)|images\/[\w./-]+)$/i;
@@ -32,7 +80,7 @@ export function createApp(db) {
     contentSecurityPolicy: {
       directives: {
         'default-src': ["'self'"],
-        'img-src': ["'self'", 'data:', 'blob:'],
+        'img-src': ["'self'", 'data:', 'blob:', 'https://avatars.githubusercontent.com'],
         'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
         'frame-src': ["'self'"],
@@ -50,8 +98,10 @@ export function createApp(db) {
   });
 
   // Draft-inclusive preview, admin only.
-  app.get('/preview', siteHeaders, (req, res) => {
-    if (!sessionUser(db, req)) return res.redirect('/admin/login?next=/preview');
+  app.get(['/preview', '/api/preview'], siteHeaders, async (req, res) => {
+    const user = sessionUser(db, req);
+    if (!user) return res.redirect('/admin/login?next=/preview');
+    if (IS_GITHUB) await getStore().ensureFresh(db, user.githubToken);
     res.set('Cache-Control', 'no-store');
     res.set('X-Robots-Tag', 'noindex');
     res.type('html').send(renderPortfolio(loadContent(db, { preview: true })));
@@ -59,7 +109,8 @@ export function createApp(db) {
 
   // ---------------- APIs ----------------
   app.use('/api/public', siteHeaders, publicRouter(db));
-  app.use('/api/admin', adminHeaders, (req, res, next) => { res.set('Cache-Control', 'no-store'); next(); }, adminRouter(db, { onChange }));
+  app.use('/api/admin', adminHeaders, (req, res, next) => { res.set('Cache-Control', 'no-store'); next(); },
+    ...(IS_GITHUB ? [githubSync(db, onChange)] : []), adminRouter(db, { onChange }));
   app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 
   // ---------------- admin SPA ----------------
@@ -74,7 +125,7 @@ export function createApp(db) {
   });
 
   // ---------------- uploaded media ----------------
-  app.use('/uploads', express.static(UPLOAD_DIR, {
+  const uploadOptions = {
     index: false, dotfiles: 'deny', maxAge: '30d', immutable: true,
     setHeaders: (res, filePath) => {
       res.set('X-Content-Type-Options', 'nosniff');
@@ -84,7 +135,10 @@ export function createApp(db) {
         res.set('Content-Security-Policy', "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; sandbox");
       }
     },
-  }));
+  };
+  app.use('/uploads', express.static(UPLOAD_DIR, uploadOptions));
+  // Files committed to the repo by GitHub mode (uploads/ in the repository).
+  app.use('/uploads', express.static(REPO_UPLOAD_DIR, uploadOptions));
 
   // ---------------- original site assets (allowlist) ----------------
   const siteStatic = express.static(ROOT_DIR, { index: false, dotfiles: 'deny', maxAge: IS_PROD ? '1d' : 0 });

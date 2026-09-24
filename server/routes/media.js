@@ -4,7 +4,8 @@ import crypto from 'node:crypto';
 import { Router } from 'express';
 import multer from 'multer';
 import { imageSize } from 'image-size';
-import { UPLOAD_DIR, LIMITS } from '../config.js';
+import { UPLOAD_DIR, LIMITS, IS_GITHUB } from '../config.js';
+import { getStore } from '../storage/github.js';
 import { logActivity, plain, getSetting } from '../db/index.js';
 
 const httpError = (status, message) => Object.assign(new Error(message), { status });
@@ -64,6 +65,8 @@ export function storeFile(db, file, { allow = ['image', 'document'] } = {}) {
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'file';
   const filename = `${base}-${hash.slice(0, 10)}.${type.ext}`;
   fs.writeFileSync(path.join(UPLOAD_DIR, filename), file.buffer);
+  // GitHub mode: the file is committed to the repo together with the content snapshot.
+  if (IS_GITHUB) getStore().stageFile(`uploads/${filename}`, file.buffer);
   const info = db.prepare(`INSERT INTO media (url, original_name, mime_type, kind, size, width, height, hash, alt_text)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(`uploads/${filename}`, file.originalname.slice(0, 200), type.mime, type.kind,
     file.size, width, height, hash, '');
@@ -80,6 +83,7 @@ export function removeMedia(db, id) {
   if (!row.is_original && row.url.startsWith('uploads/')) {
     const file = path.join(UPLOAD_DIR, path.basename(row.url));
     fs.rm(file, { force: true }, () => {});
+    if (IS_GITHUB) getStore().stageDelete(`uploads/${path.basename(row.url)}`);
   }
   logActivity(db, 'media', id, row.original_name, 'deleted');
 }

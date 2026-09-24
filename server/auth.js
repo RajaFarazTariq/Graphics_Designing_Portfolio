@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET, SESSION_HOURS, IS_PROD, DATA_DIR } from './config.js';
+import { JWT_SECRET, SESSION_HOURS, IS_PROD, DATA_DIR, IS_GITHUB } from './config.js';
 
 export const COOKIE_NAME = 'cms_session';
 export const INITIAL_PASSWORD_FILE = path.join(DATA_DIR, 'initial-admin-password.txt');
@@ -33,12 +33,41 @@ export function clearSession(res) {
   res.clearCookie(COOKIE_NAME, { httpOnly: true, sameSite: 'strict', secure: IS_PROD, path: '/' });
 }
 
-/** Returns the user for a valid session cookie, or null. Tokens die when token_version changes. */
+// ---------- GitHub-mode sessions ----------
+// The user's GitHub token is needed server-side to commit content. It is kept only inside the
+// httpOnly session cookie, encrypted (AES-256-GCM) with a key derived from JWT_SECRET.
+const tokenKey = crypto.createHash('sha256').update(`${JWT_SECRET}:github-token`).digest();
+export function encryptToken(plainText) {
+  const iv = crypto.randomBytes(12);
+  const c = crypto.createCipheriv('aes-256-gcm', tokenKey, iv);
+  const enc = Buffer.concat([c.update(plainText, 'utf8'), c.final()]);
+  return Buffer.concat([iv, c.getAuthTag(), enc]).toString('base64url');
+}
+export function decryptToken(blob) {
+  const buf = Buffer.from(blob, 'base64url');
+  const d = crypto.createDecipheriv('aes-256-gcm', tokenKey, buf.subarray(0, 12));
+  d.setAuthTag(buf.subarray(12, 28));
+  return Buffer.concat([d.update(buf.subarray(28)), d.final()]).toString('utf8');
+}
+
+export function issueGithubSession(res, { login, name, avatar, token }) {
+  const jwtToken = jwt.sign({ gh: login, n: name || login, av: avatar || '', t: encryptToken(token) }, JWT_SECRET, { expiresIn: `${SESSION_HOURS}h` });
+  res.cookie(COOKIE_NAME, jwtToken, {
+    httpOnly: true, sameSite: 'strict', secure: IS_PROD, path: '/', maxAge: SESSION_HOURS * 3600 * 1000,
+  });
+}
+
+/** Returns the user for a valid session cookie, or null. Local-mode tokens die when token_version changes. */
 export function sessionUser(db, req) {
   const token = req.cookies?.[COOKIE_NAME];
   if (!token) return null;
   try {
     const payload = jwt.verify(token, JWT_SECRET);
+    if (IS_GITHUB) {
+      if (!payload.gh || !payload.t) return null;
+      return { id: payload.gh, login: payload.gh, email: payload.gh, name: payload.n, avatar: payload.av, githubToken: decryptToken(payload.t) };
+    }
+    if (payload.gh) return null;
     const user = db.prepare('SELECT id, email, name, token_version, last_login_at FROM users WHERE id = ?').get(payload.sub);
     if (!user || user.token_version !== payload.v) return null;
     return { ...user };
@@ -92,6 +121,7 @@ export function rateLimiter({ windowMs, max, message }) {
 
 /** Creates the first admin account when the users table is empty. */
 export async function ensureAdmin(db) {
+  if (IS_GITHUB) return; // GitHub mode signs in with GitHub accounts instead
   const count = db.prepare('SELECT COUNT(*) AS n FROM users').get().n;
   if (count > 0) return;
   const profileEmail = db.prepare('SELECT email, full_name FROM profile WHERE id = 1').get();
